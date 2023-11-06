@@ -1,22 +1,25 @@
 package com.example.fastfood.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import java.util.Set;
 
 @Entity
-@Getter
-@Setter
-@Table(name = "category_table")
+@Table(name = "categories")
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
+
+    @Column(length = 500, nullable = true)
+    private String description;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Product> products;
 }

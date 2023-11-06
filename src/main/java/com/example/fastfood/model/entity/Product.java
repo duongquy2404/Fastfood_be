@@ -6,11 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users")
+@Table(name="products")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,17 +19,15 @@ public class User {
     private String name;
 
     @Column(nullable = false)
-    private String username;
+    private Double price;
 
-    @Column(nullable = false)
-    private String password;
+    @Column(length = 2000, nullable = true)
+    private String description;
 
-    @Column(nullable = false)
-    private String phone;
+    @Column(nullable = true)
+    private String imageUrl;
 
-    @Column(nullable = false)
-    private String address;
-
-    @Column(nullable = false)
-    private String avatar;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 }
