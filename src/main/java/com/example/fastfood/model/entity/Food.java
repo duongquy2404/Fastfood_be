@@ -6,11 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="products")
+@Table(name="foods")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class Food {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,13 +21,13 @@ public class Product {
     @Column(nullable = false)
     private Double price;
 
-    @Column(length = 2000, nullable = true)
+    @Column(length = 2000, nullable = false)
     private String description;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String imageUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
 }

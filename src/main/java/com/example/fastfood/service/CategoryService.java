@@ -6,10 +6,10 @@ import java.util.List;
 public interface CategoryService {
     List<Category> getAllCategory();
 
-    Category getCategoryById(Integer id);
+    Category getCategoryById(Long id);
     boolean addNewCategory(Category category);
 
-    Category updateCategory(Integer id, Category category);
+    Category updateCategory(Long id, Category category);
 
-    boolean deleteCategory(Integer id);
+    boolean deleteCategory(Long id);
 }

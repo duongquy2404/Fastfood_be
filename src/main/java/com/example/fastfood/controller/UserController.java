@@ -2,42 +2,50 @@ package com.example.fastfood.controller;
 
 import com.example.fastfood.model.dto.UserLoginDTO;
 import com.example.fastfood.model.dto.UserRegisterDTO;
+import com.example.fastfood.model.entity.Cart;
 import com.example.fastfood.model.entity.User;
-import com.example.fastfood.service.impl.UserServiceImpl;
+import com.example.fastfood.service.CartService;
+import com.example.fastfood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
+
+    @Autowired
+    private CartService cartService;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginDTO userLoginDTO) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
 
-        String passwordRemote = userLoginDTO.getPassword();
-        String usernameRemote = userLoginDTO.getUsername();
+        String username = userLoginDTO.getUsername();
+        String password = userLoginDTO.getPassword();
         try {
-            User userlocal = userService.login(usernameRemote);
-            if (userlocal != null) {
-                if (userlocal.getPassword().equals(passwordRemote)) {
+            User user = userService.login(username);
+            if (user != null) {
+                if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
                     response.put("message", "User logged in successfully");
-                    response.put("user", userlocal);
+                    response.put("user", user);
                     return new ResponseEntity<>(response, HttpStatus.OK);
                 } else {
                     error.put("message", "Password is incorrect");
                     return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
                 }
             } else {
-                error.put("message", "Phone is incorrect");
+                error.put("message", "Username is incorrect");
                 return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
             }
         } catch (RuntimeException e) {
@@ -52,13 +60,25 @@ public class UserController {
         HashMap<String, Object> error = new HashMap<>();
 
         if(!userService.checkUserByUsername(userRegisterDTO.getUsername())){
-            error.put("message", "registered username");
+            error.put("message", "Registered Username");
             return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
         }else{
             try{
-                User userRegister = userService.registerUser(userRegisterDTO);
+                String encodedPassword = bCryptPasswordEncoder.encode(userRegisterDTO.getPassword());
+
+                User user = new User();
+                user.setName(userRegisterDTO.getName());
+                user.setUsername(userRegisterDTO.getUsername());
+                user.setPassword(encodedPassword);
+                userService.register(user);
+
+                Cart cart=new Cart();
+                cart.setTotalPrice(0.0);
+                cart.setUser(user);
+                cartService.createCart(cart);
+
                 response.put("message", "User registered successfully");
-                response.put("user", userRegister);
+                response.put("user", user);
                 return new ResponseEntity<>(response,HttpStatus.OK);
             }catch (RuntimeException e){
                 error.put("message", e.getMessage());

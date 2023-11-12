@@ -17,9 +17,6 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(length = 500, nullable = true)
-    private String description;
-
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Product> products;
+    private Set<Food> foodSet;
 }

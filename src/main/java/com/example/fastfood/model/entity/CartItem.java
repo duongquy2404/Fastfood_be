@@ -19,13 +19,10 @@ public class CartItem {
     @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "food_id", nullable = false)
+    private Food food;
 
     @Column(nullable = false)
     private int quantity;
-
-    @Column(nullable = true)
-    private String note;
 }
