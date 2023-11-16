@@ -18,18 +18,12 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("/all")
-    public ResponseEntity<Object> getAllCategory() {
-        HashMap<String, Object> response = new HashMap<>();
-        HashMap<String, Object> error = new HashMap<>();
-
+    public ResponseEntity<List<Category>> getAllCategory() {
         List<Category> categoryList = categoryService.getAllCategory();
         if (categoryList.isEmpty()) {
-            error.put("message", "Category not found");
-            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            response.put("message", "Get all is successfully");
-            response.put("category", categoryList);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(categoryList, HttpStatus.OK);
         }
     }
 }

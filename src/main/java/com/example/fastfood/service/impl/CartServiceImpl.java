@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -32,5 +33,10 @@ public class CartServiceImpl implements CartService {
             return cart.getCartItems();
         }
         return Collections.emptyList();
+    }
+
+    @Override
+    public Optional<Cart> getCartById(Long id) {
+        return cartRepository.findById(id);
     }
 }

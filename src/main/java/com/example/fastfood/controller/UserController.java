@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -73,7 +74,7 @@ public class UserController {
                 userService.register(user);
 
                 Cart cart=new Cart();
-                cart.setTotalPrice(0.0);
+                cart.setTotalPrice((double) 0);
                 cart.setUser(user);
                 cartService.createCart(cart);
 
@@ -84,6 +85,32 @@ public class UserController {
                 error.put("message", e.getMessage());
                 return  new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
             }
+        }
+    }
+
+    @GetMapping("/{id}")
+    public Optional<User> getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
+    }
+
+    @PutMapping("/update/{userId}")
+    public ResponseEntity<String> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
+        Optional<User> optionalUser = userService.getUserById(userId);
+
+        if (optionalUser.isPresent()) {
+            User existingUser = optionalUser.get();
+
+            // Cập nhật thông tin người dùng
+            existingUser.setName(updatedUser.getName());
+            existingUser.setPhone(updatedUser.getPhone());
+            existingUser.setAddress(updatedUser.getAddress());
+            // Cập nhật các trường thông tin khác
+
+            userService.updateUser(existingUser);
+
+            return new ResponseEntity<>("Thông tin người dùng đã được cập nhật", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Người dùng không tồn tại", HttpStatus.NOT_FOUND);
         }
     }
 }

@@ -12,4 +12,6 @@ public interface UserService {
     boolean checkUserByUsername(String username);
 
     Optional<User> getUserById(Long id);
+
+    User updateUser(User user);
 }

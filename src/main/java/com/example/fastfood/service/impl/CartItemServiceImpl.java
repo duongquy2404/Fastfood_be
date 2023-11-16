@@ -12,7 +12,7 @@ public class CartItemServiceImpl implements CartItemService {
     private CartItemRepository cartItemRepository;
 
     @Override
-    public CartItem addCartItem(Long cartId, CartItem cartItem) {
+    public CartItem addCartItem(CartItem cartItem) {
         return cartItemRepository.save(cartItem);
     }
 

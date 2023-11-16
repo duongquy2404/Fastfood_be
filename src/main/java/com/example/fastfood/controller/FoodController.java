@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,9 @@ public class FoodController {
     @GetMapping("/all")
     public ResponseEntity<List<Food>> getAllProducts() {
         List<Food> foodList = foodService.getAllFood();
+        if (foodList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(foodList, HttpStatus.OK);
     }
 
@@ -63,5 +67,14 @@ public class FoodController {
         return updatedFood != null ?
                 new ResponseEntity<>(updatedFood, HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Food> deleteFood(@PathVariable Long id){
+        if (foodService.findFoodById(id).isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        foodService.deleteFood(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
