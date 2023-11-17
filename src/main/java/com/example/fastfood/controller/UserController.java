@@ -113,4 +113,21 @@ public class UserController {
             return new ResponseEntity<>("Người dùng không tồn tại", HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/update/avatar/{userId}")
+    public ResponseEntity<String> updateAvatar(@PathVariable Long userId, @RequestBody User updatedUser) {
+        Optional<User> optionalUser = userService.getUserById(userId);
+
+        if (optionalUser.isPresent()) {
+            User existingUser = optionalUser.get();
+
+            existingUser.setAvatar(updatedUser.getAvatar());
+
+            userService.updateUser(existingUser);
+
+            return new ResponseEntity<>("Avatar người dùng đã được cập nhật", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Người dùng không tồn tại", HttpStatus.NOT_FOUND);
+        }
+    }
 }
