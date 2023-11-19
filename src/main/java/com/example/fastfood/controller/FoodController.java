@@ -19,7 +19,7 @@ public class FoodController {
     private FoodService foodService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Food>> getAllProducts() {
+    public ResponseEntity<List<Food>> getAllFood() {
         List<Food> foodList = foodService.getAllFood();
         if (foodList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
