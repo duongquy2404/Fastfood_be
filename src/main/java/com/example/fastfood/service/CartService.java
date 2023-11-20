@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CartService {
-    Cart getCartIdByUserId(Long userId);
+    Cart getCartByUserId(Long userId);
 
     Cart createCart(Cart cart);
 

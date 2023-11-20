@@ -38,9 +38,6 @@ public class Order {
 }
 
 enum OrderStatus {
-    PENDING,
-    PROCESSING,
-    SHIPPED,
-    DELIVERED,
-    CANCELLED
+    PAID,
+    UNPAID
 }

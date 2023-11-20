@@ -63,9 +63,9 @@ public class FoodController {
         if (!id.equals(food.getId())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Food updatedFood = foodService.updateFood(food);
-        return updatedFood != null ?
-                new ResponseEntity<>(updatedFood, HttpStatus.OK) :
+        foodService.updateFood(food);
+        return foodService != null ?
+                new ResponseEntity<>(food, HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

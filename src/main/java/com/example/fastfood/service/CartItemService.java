@@ -2,10 +2,15 @@ package com.example.fastfood.service;
 
 import com.example.fastfood.model.entity.CartItem;
 
-public interface CartItemService {
-    CartItem addCartItem(CartItem cartItem);
+import java.util.List;
+import java.util.Optional;
 
-    CartItem updateCartItem(CartItem cartItem);
+public interface CartItemService {
+    List<CartItem> getCartItemByCartId(Long cartId);
+    Optional<CartItem> findCartItemById(Long id);
+    void createCartItem(CartItem cartItem);
+
+    void updateCartItem(CartItem cartItem);
 
     void deleteCartItem(Long id);
 }

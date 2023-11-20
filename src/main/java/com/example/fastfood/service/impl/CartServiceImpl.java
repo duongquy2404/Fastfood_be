@@ -17,7 +17,7 @@ public class CartServiceImpl implements CartService {
     private CartRepository cartRepository;
 
     @Override
-    public Cart getCartIdByUserId(Long userId) {
+    public Cart getCartByUserId(Long userId) {
         return cartRepository.findByUserId(userId);
     }
 
