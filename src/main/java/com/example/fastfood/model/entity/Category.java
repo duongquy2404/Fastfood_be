@@ -2,6 +2,8 @@ package com.example.fastfood.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
